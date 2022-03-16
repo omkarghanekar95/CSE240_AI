@@ -56,8 +56,8 @@ class SnakeGame:
             # YOUR CODE HERE
             dead = False
             while not dead:
-                action = self.agent.agent_action(state, points, dead)
-                state, points, dead = self.step(action)
+                action = self.agent.agent_action(self.env.get_state(), self.env.get_points(), dead)
+                state, points, dead = self.env.step(action)
                 
             # Namespace(LPC=40, NUM_DISP_ITER=1, NUM_TEST_ITER=100, NUM_TO_STAT=100, NUM_TRAIN_ITER=5000, Ne=40, food_x=120, food_y=120, gamma=0.7, snake_head_x=200, snake_head_y=200)
             #UNCOMMENT THE CODE BELOW TO PRINT STATISTICS
