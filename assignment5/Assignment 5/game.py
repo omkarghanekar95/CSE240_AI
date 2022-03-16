@@ -48,22 +48,27 @@ class SnakeGame:
         #   AS TRAINING IS HAPPENING THE CODE IN THE LOOP WILL PRINT STATISTICS.
         #   Use self.env.reset() to reset your game after each iteration.
         for game in range(1, self.args.NUM_TRAIN_ITER + 1):
-                print("TRAINING NUMBER : " + str(game))
+            print("TRAINING NUMBER : " + str(game))
             # YOUR CODE HERE
             # YOUR CODE HERE
             # YOUR CODE HERE
             # YOUR CODE HERE
             # YOUR CODE HERE
-
+            while not dead:
+                action = self.agent.agent_action(state, points, dead)
+                state, points, dead = self.step(action)
+                
+            # Namespace(LPC=40, NUM_DISP_ITER=1, NUM_TEST_ITER=100, NUM_TO_STAT=100, NUM_TRAIN_ITER=5000, Ne=40, food_x=120, food_y=120, gamma=0.7, snake_head_x=200, snake_head_y=200)
             #UNCOMMENT THE CODE BELOW TO PRINT STATISTICS
-            #if game % self.args.NUM_TO_STAT == 0:
-            #    print(
-            #        "Played games:", len(self.points_results) - NUM_TO_STAT, "-", len(self.points_results), 
-            #        "Calculated points (Average:", sum(self.points_results[-NUM_TO_STAT:])/NUM_TO_STAT,
-            #        "Max points so far:", max(self.points_results[-NUM_TO_STAT:]),
-            #        "Min points so far:", min(self.points_results[-NUM_TO_STAT:]),")",
-            #    )
+            if game % self.args.NUM_TO_STAT == 0:
+               print(
+                   "Played games:", len(self.points_results) - NUM_TO_STAT, "-", len(self.points_results), 
+                   "Calculated points (Average:", sum(self.points_results[-NUM_TO_STAT:])/NUM_TO_STAT,
+                   "Max points so far:", max(self.points_results[-NUM_TO_STAT:]),
+                   "Min points so far:", min(self.points_results[-NUM_TO_STAT:]),")",
+               )
             # YOUR CODE HERE
+            self.env.reset()
         print("Training takes", time.time() - start, "seconds")
         #   THIS LINE WILL SAVE THE MODEL TO THE FILE "model.npy"
         self.agent.save_model()

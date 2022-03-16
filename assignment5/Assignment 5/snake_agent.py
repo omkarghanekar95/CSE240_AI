@@ -19,7 +19,7 @@ class SnakeAgent:
     def __init__(self, actions, Ne, LPC, gamma):
         self.actions = actions
         self.Ne = Ne
-        self.LPC = LPC
+        self.LPC = 0.7#LPC
         self.gamma = gamma
         self.reset()
 
@@ -60,6 +60,7 @@ class SnakeAgent:
     #   conditions mentioned above.
     def helper_func(self, state):
         print("IN helper_func")
+        print('state in helper' , state)
         # YOUR CODE HERE
         # YOUR CODE HERE
         # YOUR CODE HERE
@@ -98,6 +99,24 @@ class SnakeAgent:
     #   states as mentioned in helper_func, use the state variable to contain all that.
     def agent_action(self, state, points, dead):
         print("IN AGENT_ACTION")
+        rew = self.compute_reward(state, points, dead)
+        rstate = self.helper_func(state)
+        print('state after helper', rstate)
+        # Epsilon greedy
+        # rand = random.uniform(0,1)
+        # if rand < self.Ne:
+        #     action_key = random.choices(self.actions)[0]
+        # else:
+        #     state_scores = self.Q[self._GetStateStr(state)]
+        #     action_key = state_scores.index(max(state_scores))
+        # action_val = self.actions[action_key]
+
+        # # Remember the actions it took at each state
+        # self.history.append({
+        #     'state': state,
+        #     'action': action_key
+        #     })
+        
         # YOUR CODE HERE
         # YOUR CODE HERE
         # YOUR CODE HERE
@@ -107,4 +126,4 @@ class SnakeAgent:
         # YOUR CODE HERE
 
         #UNCOMMENT THIS TO RETURN THE REQUIRED ACTION.
-        #return action
+        return action

@@ -31,8 +31,8 @@ NUM_ADJOINING_BODY_RIGHT_STATES=2
 NUM_ACTIONS = 4
 
 #   Here we define a bunch of variables that will determine training, testing and displaying the result
-NUM_TRAIN_ITER = 5000
-NUM_TEST_ITER = 100
+NUM_TRAIN_ITER = 50
+NUM_TEST_ITER = 1
 NUM_DISP_ITER = 1
 NUM_TO_STAT = 100
 snake_head_x = 200
