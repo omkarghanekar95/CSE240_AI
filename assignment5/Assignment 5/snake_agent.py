@@ -99,7 +99,7 @@ class SnakeAgent:
     #   states as mentioned in helper_func, use the state variable to contain all that.
     def agent_action(self, state, points, dead):
         print("IN AGENT_ACTION")
-        rew = self.compute_reward(state, points, dead)
+        rew = self.compute_reward(points, dead)
         rstate = self.helper_func(state)
         print('state after helper', rstate)
         # Epsilon greedy
