@@ -61,6 +61,7 @@ class SnakeAgent:
     def helper_func(self, state):
         print("IN helper_func")
         print('state in helper' , state)
+        return state
         # YOUR CODE HERE
         # YOUR CODE HERE
         # YOUR CODE HERE
@@ -101,7 +102,7 @@ class SnakeAgent:
         print("IN AGENT_ACTION")
         rew = self.compute_reward(points, dead)
         rstate = self.helper_func(state)
-        print('state after helper', rstate)
+        print('state after helper and reward is ', rew, rstate)
         # Epsilon greedy
         # rand = random.uniform(0,1)
         # if rand < self.Ne:
@@ -126,4 +127,4 @@ class SnakeAgent:
         # YOUR CODE HERE
 
         #UNCOMMENT THIS TO RETURN THE REQUIRED ACTION.
-        return action
+        return rew
