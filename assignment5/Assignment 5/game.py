@@ -54,6 +54,7 @@ class SnakeGame:
             # YOUR CODE HERE
             # YOUR CODE HERE
             # YOUR CODE HERE
+            dead = False
             while not dead:
                 action = self.agent.agent_action(state, points, dead)
                 state, points, dead = self.step(action)
