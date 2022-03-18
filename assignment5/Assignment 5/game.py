@@ -58,7 +58,7 @@ class SnakeGame:
                 state, points, dead = self.env.step(action)
                 
                 if first_eat and points == 1:
-                    self.agent.save_model(helper.MODEL_SAVE_FILE)
+                    self.agent.save_model()
                     first_eat = False
                 action = self.agent.agent_action(state, points, dead)
             
@@ -116,7 +116,7 @@ class SnakeGame:
         print("Min Points:", min(points_results))
 
         return sum(points_results)/len(points_results)
-    
+
     #   This function is the one where the game will be displayed.
     #   This function is already written for you. No changes are necessary
     #       as long as YOU don't change function names or parameters.

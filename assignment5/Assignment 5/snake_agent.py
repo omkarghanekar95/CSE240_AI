@@ -59,16 +59,6 @@ class SnakeAgent:
     #   This can return a list of variables that help you keep track of
     #   conditions mentioned above.
 
-    # def wall_check(self):
-    #     if self.snake.xcor() > 200 or self.snake.xcor() < -200 or self.snake.ycor() > 200 or self.snake.ycor() < -200:
-    #         self.reset_score()
-    #         return True
-
-    # def measure_distance(self):
-    #     self.prev_dist = self.dist
-    #     self.dist = math.sqrt((self.snake.xcor()-self.apple.xcor())**2 + (self.snake.ycor()-self.apple.ycor())**2)
-
-
     def helper_func(self, state):
         print("IN helper_func")
         print('state in helper' , state)
