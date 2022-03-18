@@ -133,8 +133,7 @@ class SnakeAgent:
         print("IN AGENT_ACTION")
         rew = self.compute_reward(points, dead)
         rstate = self.helper_func(state)
-        print('state after helper and reward is ', rew, rstate)
-
+        
         if not self._train:
             temp = self.Q[rstate][3] - 1
             for i in range(3, -1, -1):
