@@ -61,7 +61,6 @@ class SnakeAgent:
 
     def helper_func(self, state):
         print("IN helper_func")
-        print('state in helper' , state)
         cur_state = [0, 0, 0, 0, 0, 0, 0, 0]
         if state[0] < state[3]:
             cur_state[0] = 2
@@ -100,13 +99,6 @@ class SnakeAgent:
         if (state[0], state[1] - helper.GRID_SIZE) in state[2]:
             cur_state[4] = 1
         return tuple(cur_state)
-        # [200, 200, [], 120, 120]
-        # YOUR CODE HERE
-        # YOUR CODE HERE
-        # YOUR CODE HERE
-        # YOUR CODE HERE
-        # YOUR CODE HERE
-
 
     # Computing the reward, need not be changed.
     def compute_reward(self, points, dead):
