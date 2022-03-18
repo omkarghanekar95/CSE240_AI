@@ -16,10 +16,10 @@ class SnakeAgent:
     #   Q is the q-table used in Q-learning
     #   N is the next state used to explore possible moves and decide the best one before updating
     #           the q-table
-    def __init__(self, actions, Ne, LPC, gamma):
+    def __init__(self, actions, Ne, LPC, gamma=0.7):
         self.actions = actions
         self.Ne = Ne
-        self.LPC = 0.7#LPC
+        self.LPC = LPC
         self.gamma = gamma
         self.reset()
 
@@ -58,10 +58,59 @@ class SnakeAgent:
     #   moves it can make lead it into the snake body and so on. 
     #   This can return a list of variables that help you keep track of
     #   conditions mentioned above.
+
+    # def wall_check(self):
+    #     if self.snake.xcor() > 200 or self.snake.xcor() < -200 or self.snake.ycor() > 200 or self.snake.ycor() < -200:
+    #         self.reset_score()
+    #         return True
+
+    # def measure_distance(self):
+    #     self.prev_dist = self.dist
+    #     self.dist = math.sqrt((self.snake.xcor()-self.apple.xcor())**2 + (self.snake.ycor()-self.apple.ycor())**2)
+
+
     def helper_func(self, state):
         print("IN helper_func")
         print('state in helper' , state)
-        return state
+        cur_state = [0, 0, 0, 0, 0, 0, 0, 0]
+        if state[0] < state[3]:
+            cur_state[0] = 2
+        if state[0] > state[3]:
+            cur_state[0] = 1
+        if state[0] == helper.GRID_SIZE:
+            cur_state[2] = 1
+        if state[0] == (helper.DISPLAY_SIZE - 2 * helper.GRID_SIZE):
+            cur_state[2] = 2
+        if state[0] < helper.GRID_SIZE:
+            cur_state[2] = 0
+            cur_state[3] = 0
+        if state[0] > (helper.DISPLAY_SIZE - 2 * helper.GRID_SIZE):
+            cur_state[2] = 0
+            cur_state[3] = 0
+        if state[1] < helper.GRID_SIZE:
+            cur_state[2] = 0
+            cur_state[3] = 0
+        if state[1] > (helper.DISPLAY_SIZE - 2 * helper.GRID_SIZE):
+            cur_state[2] = 0
+            cur_state[3] = 0
+        if state[1] > state[4]:
+            cur_state[1] = 1
+        if state[1] < state[4]:
+            cur_state[1] = 2
+        if state[1] == helper.GRID_SIZE:
+            cur_state[3] = 1
+        if (state[0] + helper.GRID_SIZE, state[1]) in state[2]:
+            cur_state[7] = 1
+        if (state[0] - helper.GRID_SIZE, state[1]) in state[2]:
+            cur_state[6] = 1
+        if state[1] == (helper.DISPLAY_SIZE - 2 * helper.GRID_SIZE):
+            cur_state[3] = 2
+        if (state[0], state[1] + helper.GRID_SIZE) in state[2]:
+            cur_state[5] = 1
+        if (state[0], state[1] - helper.GRID_SIZE) in state[2]:
+            cur_state[4] = 1
+        return tuple(cur_state)
+        # [200, 200, [], 120, 120]
         # YOUR CODE HERE
         # YOUR CODE HERE
         # YOUR CODE HERE
@@ -103,28 +152,44 @@ class SnakeAgent:
         rew = self.compute_reward(points, dead)
         rstate = self.helper_func(state)
         print('state after helper and reward is ', rew, rstate)
-        # Epsilon greedy
-        # rand = random.uniform(0,1)
-        # if rand < self.Ne:
-        #     action_key = random.choices(self.actions)[0]
-        # else:
-        #     state_scores = self.Q[self._GetStateStr(state)]
-        #     action_key = state_scores.index(max(state_scores))
-        # action_val = self.actions[action_key]
 
-        # # Remember the actions it took at each state
-        # self.history.append({
-        #     'state': state,
-        #     'action': action_key
-        #     })
-        
-        # YOUR CODE HERE
-        # YOUR CODE HERE
-        # YOUR CODE HERE
-        # YOUR CODE HERE
-        # YOUR CODE HERE
-        # YOUR CODE HERE
-        # YOUR CODE HERE
+        if not self._train:
+            temp = self.Q[rstate][3] - 1
+            for i in range(3, -1, -1):
+                q = self.Q[rstate][i]
+                if q > temp:
+                    temp = q
+                    self.a = i
+        else:
+            if self.a != None:
+                if self.s != None:
+                    if dead:
+                        r = -1
+                    elif points == self.points + 1:
+                        r = 1
+                    else:
+                        r = -0.1
+                    temp = self.Q[rstate][3] - 1
+                    for i in range(3, -1, -1):
+                        q = self.Q[rstate][i]
+                        if q > temp:
+                            temp = q
+                    self.N[self.s][self.a] += 1
+                    self.Q[self.s][self.a] += (self.LPC / (self.N[self.s][self.a] + self.LPC)) * (self.gamma * temp + r - self.Q[self.s][self.a])
+            if dead:
+                self.reset()
+                return 1
+            self.s = rstate
+            self.points = points
+            temp = self.Q[rstate][3] - 1
+            for i in range(3, -1, -1):
+                if self.N[rstate][i] < self.Ne:
+                    p = 1
+                else:
+                    p = self.Q[rstate][i]
+                if p > temp:
+                    temp = p
+                    self.a = i
 
-        #UNCOMMENT THIS TO RETURN THE REQUIRED ACTION.
-        return rew
+        return self.a
+        # YOUR CODE HERE

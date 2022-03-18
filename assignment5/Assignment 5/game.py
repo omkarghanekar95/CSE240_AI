@@ -43,6 +43,7 @@ class SnakeGame:
         self.points_results = []
         start = time.time()
 
+        first_eat =True
         #   This loop will train for required number of times
         #   WRITE YOUR CODE IN THIS LOOP TO CALL THE TRAINING FUNCTION.
         #   AS TRAINING IS HAPPENING THE CODE IN THE LOOP WILL PRINT STATISTICS.
@@ -51,15 +52,18 @@ class SnakeGame:
             print("TRAINING NUMBER : " + str(game))
             # YOUR CODE HERE
             # YOUR CODE HERE
-            # YOUR CODE HERE
-            # YOUR CODE HERE
-            # YOUR CODE HERE
             dead = False
+            action = self.agent.agent_action(self.env.get_state(), 0, dead)
             while not dead:
-                action = self.agent.agent_action(self.env.get_state(), self.env.get_points(), dead)
                 state, points, dead = self.env.step(action)
                 
-            # Namespace(LPC=40, NUM_DISP_ITER=1, NUM_TEST_ITER=100, NUM_TO_STAT=100, NUM_TRAIN_ITER=5000, Ne=40, food_x=120, food_y=120, gamma=0.7, snake_head_x=200, snake_head_y=200)
+                if first_eat and points == 1:
+                    self.agent.save_model(helper.MODEL_SAVE_FILE)
+                    first_eat = False
+                action = self.agent.agent_action(state, points, dead)
+            
+            self.points_results.append(self.env.get_points())
+            
             #UNCOMMENT THE CODE BELOW TO PRINT STATISTICS
             if game % self.args.NUM_TO_STAT == 0:
                print(
@@ -90,7 +94,14 @@ class SnakeGame:
         #   Use self.env.reset() to reset your state everytime a new game begins.
         for game in range(1, self.args.NUM_TEST_ITER + 1):
             print("TESTING NUMBER: " + str(game))
-                
+            
+            dead = False
+            action = self.agent.agent_action(self.env.get_state(), 0, dead)
+            while not dead:
+                state, points, dead = self.env.step(action)
+                action = self.agent.act(state, points, dead)
+            points_results.append(self.env.get_points())
+            self.env.reset()
             # YOUR CODE HERE
             # YOUR CODE HERE
             # YOUR CODE HERE
@@ -98,13 +109,14 @@ class SnakeGame:
             # YOUR CODE HERE
 
         #UNCOMMENT THE CODE BELOW TO PRINT STATISTICS
-        #print("Testing takes", time.time() - start, "seconds")
-        #print("Number of Games:", len(points_results))
-        #print("Average Points:", sum(points_results)/len(points_results))
-        #print("Max Points:", max(points_results))
-        #print("Min Points:", min(points_results))
+        print("Testing takes", time.time() - start, "seconds")
+        print("Number of Games:", len(points_results))
+        print("Average Points:", sum(points_results)/len(points_results))
+        print("Max Points:", max(points_results))
+        print("Min Points:", min(points_results))
 
-
+        return sum(points_results)/len(points_results)
+    
     #   This function is the one where the game will be displayed.
     #   This function is already written for you. No changes are necessary
     #       as long as YOU don't change function names or parameters.
