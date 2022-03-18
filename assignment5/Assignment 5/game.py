@@ -99,7 +99,7 @@ class SnakeGame:
             action = self.agent.agent_action(self.env.get_state(), 0, dead)
             while not dead:
                 state, points, dead = self.env.step(action)
-                action = self.agent.act(state, points, dead)
+                action = self.agent.agent_action(state, points, dead)
             points_results.append(self.env.get_points())
             self.env.reset()
             # YOUR CODE HERE
